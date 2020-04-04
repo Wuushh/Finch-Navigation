@@ -12,11 +12,11 @@ class Gui extends JFrame implements ActionListener {
     JButton F, L, R, B, S, Run, Recall;
     JLabel lable_v1,lable_v2;
     JTextField mytext;
-    
+    String direction = "";
 
     public Gui() {
-        // constructor creates panel and GUI components and adds them to the frame and
-        // panel
+        
+        
 
         mypanel = new JPanel();
         F = new JButton("F");
@@ -27,7 +27,7 @@ class Gui extends JFrame implements ActionListener {
         Run = new JButton("Run");
         Recall = new JButton("Recall");
         lable_v1 = new JLabel("Choose the direction");
-        lable_v2 = new JLabel("sex");
+        lable_v2 = new JLabel("i existe");
         mytext = new JTextField(20);
         mytext.setEditable(false); 
         lable_v2.setVisible(false);
@@ -53,49 +53,70 @@ class Gui extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-
+    	
+    	Inputconverter Conv = new Inputconverter();
         if (e.getSource() == F) {
             
             lable_v1.setText("Input duration and speed separated by a space");
         	lable_v2.setVisible(true);
         	lable_v2.setText("Duration (max 6) and Speeds (0 to 100) ");
             mytext.setEditable(true);
+            direction="F";
         }
         else if(e.getSource()== L){
         	lable_v1.setText("Input duration and 2 different speeds separated by a space");
         	lable_v2.setVisible(true);
         	lable_v2.setText("Duration (max 6) and Speeds (-100 to 100) ");
             mytext.setEditable(true);
+            direction="L";
         }
         else if(e.getSource()== R){
         	lable_v1.setText("Input duration and 2 different speeds separated by a space");
         	lable_v2.setVisible(true);
         	lable_v2.setText("Duration (max 6) and Speeds (-100 to 100) ");
             mytext.setEditable(true);
+            direction="R";
         }
         else if(e.getSource()== B){
         	lable_v1.setText("Input duration and speed separated by a space");
         	lable_v2.setVisible(true);
         	lable_v2.setText("Duration (max 6) and Speeds (0 to 100) ");
             mytext.setEditable(true);
+            direction="B";
         }
        
         else if(e.getSource()== Run){
+        	
         	String user_input = mytext.getText();
-        	Inputconverter Conv = new Inputconverter();
-        	Conv.setinput(user_input);
+        	
+        	Conv.setinput(user_input,direction);
         	lable_v1.setText("Choose the direction");
         	lable_v2.setVisible(false);
         	mytext.setText("");
-        	mytext.setEditable(false);        	
+        	mytext.setEditable(false);  
+        	
         }
         else if(e.getSource()== S){
-        	
+        	System.exit(0);
         }
         else if(e.getSource()== Recall){
         	
         }
 
+    }
+    public void errormsg(String error){
+    	switch(error){
+		case"Duration":
+			JOptionPane.showMessageDialog(null,"Duration out of bounds(0-6)");
+			break;
+		case"Speed":
+			JOptionPane.showMessageDialog(null,"Speed out of bounds(0-100)");
+			break;
+		case"Turn":
+			JOptionPane.showMessageDialog(null,"For left or right speeds must be different");
+			break;
+		}
+    
     }
 
     public void doit() {
