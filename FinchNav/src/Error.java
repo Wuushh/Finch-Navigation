@@ -1,31 +1,28 @@
+import javax.swing.JOptionPane;
 
 public class Error {
 	private void errorcheck(String direction,int duration,int speed1,int speed2){
-		String error="No";
-		Gui errormsg = new Gui();
+		String logs=direction+" "+duration+" "+ speed1+" "+ speed2;;
+		
 		if (duration > 6000) {
-			error = "Duration";
-			errormsg.errormsg(error);
+			JOptionPane.showMessageDialog(null,"Duration out of bounds(0-6)");
 		} else if (speed1 > 255 || speed2 > 255 || speed1 < 0 || speed2 < 0) {
-			error = "Speed";
-			errormsg.errormsg(error);
+			JOptionPane.showMessageDialog(null,"Speed out of bounds(0-100)");
 		} else {
 			switch (direction) {
 			case "L":
 			case "R":
 				if (speed1 == speed2) {
-					error = "Turn";
-					errormsg.errormsg(error);
+					JOptionPane.showMessageDialog(null,"For left or right speeds must be different");
 				} else
-					getinput(direction, duration, speed1, speed2);
-					error = "No";
-					errormsg.errormsg(error);
+					getinput(direction, duration, speed1, speed2,logs);
+					
 					break;
 			case "F":
 			case "B":
-				getinput(direction, duration, speed1, speed2);
-				error = "No";
-				errormsg.errormsg(error);
+				
+				getinput(direction, duration, speed1, speed2,logs);
+				
 				break;
 			}
 		}
@@ -33,8 +30,10 @@ public class Error {
 	public void seterror(String direction,int duration,int speed1,int speed2){
 		errorcheck(direction,duration,speed1,speed2);
 	}
-	public void getinput(String direction,int duration,int speed1,int speed2){
+	public void getinput(String direction,int duration,int speed1,int speed2, String logs){
 		finch_physical_action finchirl = new finch_physical_action();
 		finchirl.setmove(direction, duration, speed1, speed2);
+		Recall setlogs = new Recall();
+		setlogs.setlogs(logs);
 	}
 }

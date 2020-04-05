@@ -1,5 +1,7 @@
 import java.awt.event.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import javax.swing.*;
 
 class Gui extends JFrame implements ActionListener {
@@ -38,11 +40,12 @@ class Gui extends JFrame implements ActionListener {
         mypanel.add(R);
         mypanel.add(B);
         mypanel.add(S);
+        mypanel.add(Recall);
         mypanel.add(lable_v1);
         mypanel.add(lable_v2);
         mypanel.add(mytext);
         mypanel.add(Run);
-        mypanel.add(Recall);
+        
         F.addActionListener(this);
         L.addActionListener(this);
         R.addActionListener(this);
@@ -55,6 +58,7 @@ class Gui extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
     	
     	Inputconverter Conv = new Inputconverter();
+    	Recall logs=new Recall();
         if (e.getSource() == F) {
             
             lable_v1.setText("Input duration and speed separated by a space");
@@ -86,43 +90,41 @@ class Gui extends JFrame implements ActionListener {
         }
        
         else if(e.getSource()== Run){
-        	
         	String user_input = mytext.getText();
-        	
+        	if (direction==null){
+        		try {
+					logs.setreplays(user_input);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        	}
+        	else{
         	Conv.setinput(user_input,direction);
+        	}
         	lable_v1.setText("Choose the direction");
         	lable_v2.setVisible(false);
         	mytext.setText("");
         	mytext.setEditable(false);  
-        	
         }
         else if(e.getSource()== S){
         	System.exit(0);
         }
         else if(e.getSource()== Recall){
-        	
+        	lable_v1.setText("Choose how many commands to replay");
+        	lable_v2.setVisible(true);
+        	lable_v2.setText("Duration (max 6) and Speeds (-100 to 100) ");
+            mytext.setEditable(true);
+            direction=null;
         }
 
     }
-    public void errormsg(String error){
-    	switch(error){
-		case"Duration":
-			JOptionPane.showMessageDialog(null,"Duration out of bounds(0-6)");
-			break;
-		case"Speed":
-			JOptionPane.showMessageDialog(null,"Speed out of bounds(0-100)");
-			break;
-		case"Turn":
-			JOptionPane.showMessageDialog(null,"For left or right speeds must be different");
-			break;
-		}
     
-    }
 
     public void doit() {
         JFrame myFrame = new Gui();
         myFrame.setTitle("Finch Controller");
-        myFrame.setSize(360, 200);
+        myFrame.setSize(365, 200);
         myFrame.setLocation(10, 220);
         myFrame.setVisible(true);
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
